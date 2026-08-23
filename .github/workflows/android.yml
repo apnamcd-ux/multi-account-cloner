@@ -1,32 +1,30 @@
-name: Build Android APK
+name: Android CI
 
 on:
   push:
     branches: [ "main" ]
-  workflow_dispatch:
+  pull_request:
+    branches: [ "main" ]
 
 jobs:
   build:
     runs-on: ubuntu-latest
 
     steps:
-      - name: Checkout Repository
-        uses: actions/checkout@v4
+    - uses: actions/checkout@v4
 
-      - name: Set up Java JDK 17
-        uses: actions/setup-java@v4
-        with:
-          java-version: '17'
-          distribution: 'temurin'
+    - name: set up JDK 17
+      uses: actions/setup-java@v4
+      with:
+        java-version: '17'
+        distribution: 'temurin'
+        cache: gradle
 
-      - name: Setup Gradle
-        uses: gradle/actions/setup-gradle@v3
+    - name: Setup Gradle
+      uses: gradle/actions/setup-gradle@v4
 
-      - name: Build APK with Gradle
-        run: gradle assembleDebug --stacktrace
+    - name: Make gradlew executable
+      run: chmod +x gradlew
 
-      - name: Upload APK Artifact
-        uses: actions/upload-artifact@v4
-        with:
-          name: multi-account-cloner-apk
-          path: "app/build/outputs/apk/debug/app-debug.apk"
+    - name: Build with Gradle
+      run: ./gradlew assembleDebug --stacktrace
