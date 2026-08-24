@@ -32,5 +32,5 @@ android {
 }
 
 dependencies {
-    implementation(project(":Bcore"))
+    implementation(project("top.niunaijun.blackbox:Bcore")
 }
