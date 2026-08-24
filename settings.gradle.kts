@@ -19,3 +19,9 @@ rootProject.name = "multi-account-cloner"
 
 include(":app")
 include(":Bcore")
+include(":Bcore:black-fake")
+include(":Bcore:black-hook")
+include(":Bcore:pine-xposed")
+include(":Bcore:pine-core")
+include(":Bcore:pine-xposed-res")
+include(":android-mirror")
