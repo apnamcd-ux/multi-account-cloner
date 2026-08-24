@@ -32,5 +32,5 @@ android {
 }
 
 dependencies {
-    implementation("com.github.FBlackBox:BlackBox:v1.6.1")
+    implementation("com.github.FBlackBox:BlackBox:1.6.1")
 }
