@@ -18,9 +18,4 @@ dependencyResolutionManagement {
 rootProject.name = "multi-account-cloner"
 
 include(":app")
-
-includeBuild("Bcore") {
-    dependencySubstitution {
-        substitute(module("top.niunaijun.blackbox:Bcore")).using(project(":Bcore"))
-    }
-}
+includeBuild("Bcore")
