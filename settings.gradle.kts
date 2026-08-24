@@ -19,5 +19,5 @@ rootProject.name = "multi-account-cloner"
 
 include(":app")
 
-// Treat the cloned BlackBox repo as an included build
+// Includes the cloned Bcore directory as a composite build
 includeBuild("Bcore")
