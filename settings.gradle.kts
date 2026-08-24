@@ -18,4 +18,5 @@ dependencyResolutionManagement {
 rootProject.name = "multi-account-cloner"
 
 include(":app")
-includeBuild("Bcore")
+include(":Bcore")
+project(":Bcore").projectDir = file("Bcore")
