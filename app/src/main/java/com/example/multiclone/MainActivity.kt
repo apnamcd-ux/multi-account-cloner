@@ -2,7 +2,7 @@ package com.example.multiclone
 
 import android.app.Activity
 import android.content.Context
-import android.content.Intent
+import android.content.pm.PackageManager
 import android.graphics.Bitmap
 import android.graphics.Canvas
 import android.graphics.Color
@@ -13,11 +13,15 @@ import android.os.Bundle
 import android.view.Gravity
 import android.view.View
 import android.widget.*
+import top.niunaijun.blackbox.BlackBoxCore
 
 class MainActivity : Activity() {
 
     private lateinit var gridLayout: GridLayout
     private var accountCount = 0
+
+    // Package name of the app to clone (e.g. Tesla app)
+    private val targetPackageName = "com.teslamotors.tesla"
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -27,7 +31,6 @@ class MainActivity : Activity() {
 
         val mainLayout = RelativeLayout(this)
 
-        // Header Title
         val titleText = TextView(this).apply {
             id = View.generateViewId()
             text = "Clone App"
@@ -37,7 +40,6 @@ class MainActivity : Activity() {
         }
         mainLayout.addView(titleText)
 
-        // Scrollable Grid for Clones
         val scrollView = ScrollView(this).apply {
             val params = RelativeLayout.LayoutParams(
                 RelativeLayout.LayoutParams.MATCH_PARENT,
@@ -55,7 +57,7 @@ class MainActivity : Activity() {
         scrollView.addView(gridLayout)
         mainLayout.addView(scrollView)
 
-        // Floating (+) Button to add new Tesla instance
+        // Floating '+' Button to add new cloned Tesla instance
         val fab = Button(this).apply {
             text = "+"
             textSize = 28f
@@ -72,6 +74,14 @@ class MainActivity : Activity() {
             setOnClickListener {
                 accountCount++
                 prefs.edit().putInt("AccountCount", accountCount).apply()
+
+                // Install package inside sandbox for the new virtual userId
+                try {
+                    BlackBoxCore.get().installPackageAsUser(targetPackageName, accountCount)
+                } catch (e: Exception) {
+                    e.printStackTrace()
+                }
+
                 renderGrid()
             }
         }
@@ -89,13 +99,13 @@ class MainActivity : Activity() {
                 orientation = LinearLayout.VERTICAL
                 gravity = Gravity.CENTER
                 setPadding(20, 20, 20, 20)
+                isClickable = true
+                isFocusable = true
             }
 
-            // Generate an icon with the number (e.g., 1, 2, 3...)
             val iconImage = ImageView(this).apply {
                 setImageDrawable(createNumberedIcon(i))
-                val layoutParams = LinearLayout.LayoutParams(140, 140)
-                this.layoutParams = layoutParams
+                layoutParams = LinearLayout.LayoutParams(140, 140)
             }
 
             val labelText = TextView(this).apply {
@@ -107,16 +117,21 @@ class MainActivity : Activity() {
             itemLayout.addView(iconImage)
             itemLayout.addView(labelText)
 
-            // Click to open target web session
-            itemLayout.setOnClickListener {
-                val intent = Intent(this@MainActivity, WebInstanceActivity::class.java).apply {
-                    putExtra("EXTRA_PROFILE_ID", "tesla_$i")
-                    putExtra("EXTRA_URL", "https://web.whatsapp.com")
+            val openAppListener = View.OnClickListener {
+                Toast.makeText(this@MainActivity, "Launching Tesla$i...", Toast.LENGTH_SHORT).show()
+                // Launch target APK inside virtual sandbox for profile ID = i
+                try {
+                    BlackBoxCore.get().launchApk(targetPackageName, i)
+                } catch (e: Exception) {
+                    Toast.makeText(this@MainActivity, "Please install official Tesla app first!", Toast.LENGTH_LONG).show()
                 }
-                startActivity(intent)
             }
 
-            // Long-press to delete the clone
+            itemLayout.setOnClickListener(openAppListener)
+            iconImage.setOnClickListener(openAppListener)
+            labelText.setOnClickListener(openAppListener)
+
+            // Long click to remove instance
             itemLayout.setOnLongClickListener {
                 if (i == accountCount) {
                     accountCount--
@@ -132,14 +147,13 @@ class MainActivity : Activity() {
         }
     }
 
-    // Programmatically generates round numbered icons (1, 2, 3...)
     private fun createNumberedIcon(number: Int): BitmapDrawable {
         val size = 150
         val bitmap = Bitmap.createBitmap(size, size, Bitmap.Config.ARGB_8888)
         val canvas = Canvas(bitmap)
 
         val bgPaint = Paint().apply {
-            color = Color.parseColor("#4CAF50") // Green icon background
+            color = Color.parseColor("#E51937") // Tesla Red background
             isAntiAlias = true
         }
         canvas.drawRoundRect(0f, 0f, size.toFloat(), size.toFloat(), 30f, 30f, bgPaint)
