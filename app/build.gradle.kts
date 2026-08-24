@@ -32,6 +32,5 @@ android {
 }
 
 dependencies {
-    // Maps to BlackBox's group and module identity so Gradle routes it to the local Bcore build
-    implementation("top.niunaijun.blackbox:Bcore:1.0.0")
+    implementation("top.niunaijun.blackbox:Bcore")
 }
