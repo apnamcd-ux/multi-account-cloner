@@ -1,10 +1,16 @@
 <?xml version="1.0" encoding="utf-8"?>
 <manifest xmlns:android="http://schemas.android.com/apk/res/android">
 
+    <!-- Allows internet connection and checking installed apps on device -->
+    <uses-permission android:name="android.permission.INTERNET" />
+    <uses-permission android:name="android.permission.QUERY_ALL_PACKAGES" />
+
     <application
+        android:name=".MainApplication"
         android:allowBackup="true"
-        android:label="Multi Account Cloner"
+        android:label="Clone App"
         android:supportsRtl="true">
+
         <activity
             android:name=".MainActivity"
             android:exported="true">
@@ -13,6 +19,9 @@
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
+
+        <activity android:name=".WebInstanceActivity" />
+
     </application>
 
 </manifest>
