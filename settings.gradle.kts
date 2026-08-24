@@ -19,5 +19,8 @@ rootProject.name = "multi-account-cloner"
 
 include(":app")
 
-include(":Bcore")
-project(":Bcore").projectDir = file("Bcore/Bcore")
+includeBuild("Bcore") {
+    dependencySubstitution {
+        substitute(module("top.niunaijun.blackbox:Bcore")).using(project(":Bcore"))
+    }
+}
