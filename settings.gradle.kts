@@ -18,3 +18,4 @@ dependencyResolutionManagement {
 rootProject.name = "multi-account-cloner"
 
 include(":app")
+include(":Bcore")
