@@ -32,5 +32,5 @@ android {
 }
 
 dependencies {
-    implementation("com.github.FBlackBox.BlackBox:Bcore:v1.6.0")
+    implementation(project(":Bcore"))
 }
