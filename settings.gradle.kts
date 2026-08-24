@@ -18,4 +18,4 @@ rootProject.name = "multi-account-cloner"
 
 include(":app")
 include(":Bcore")
-project(":Bcore").projectDir = file("Bcore/Bcore")
+project(":Bcore").projectDir = file("Bcore")
