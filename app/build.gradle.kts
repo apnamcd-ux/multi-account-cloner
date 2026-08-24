@@ -32,5 +32,5 @@ android {
 }
 
 dependencies {
-    implementation("top.niunaijun.blackbox:Bcore")
+    implementation("com.github.FBlackBox:BlackBox:v1.6.0")
 }
