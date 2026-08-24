@@ -21,6 +21,7 @@ include(":app")
 
 includeBuild("Bcore") {
     dependencySubstitution {
+        // BlackBox defines the submodule as ':Bcore' inside its root project
         substitute(module("top.niunaijun.blackbox:Bcore")).using(project(":Bcore"))
     }
 }
