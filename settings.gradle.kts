@@ -19,9 +19,16 @@ rootProject.name = "multi-account-cloner"
 
 include(":app")
 include(":Bcore")
+
+// Map Bcore internal modules to BlackBox repository layout
+include(":Bcore:Bcore")
+project(":Bcore:Bcore").projectDir = file("Bcore/Bcore")
+
 include(":Bcore:black-fake")
-include(":Bcore:black-hook")
-include(":Bcore:pine-xposed")
-include(":Bcore:pine-core")
-include(":Bcore:pine-xposed-res")
-include(":android-mirror")
+project(":Bcore:black-fake").projectDir = file("Bcore/black-fake")
+
+include(":Bcore:pine:pine-xposed")
+project(":Bcore:pine:pine-xposed").projectDir = file("Bcore/pine/pine-xposed")
+
+include(":Bcore:pine:pine-core")
+project(":Bcore:pine:pine-core").projectDir = file("Bcore/pine/pine-core")
