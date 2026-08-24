@@ -19,6 +19,7 @@ jobs:
         with:
           repository: 'FBlackBox/BlackBox'
           path: 'Bcore'
+          submodules: 'recursive'
 
       - name: Set up JDK 17
         uses: actions/setup-java@v4
